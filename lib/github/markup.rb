@@ -1,5 +1,6 @@
 require "github/markup/command_implementation"
 require "github/markup/gem_implementation"
+require "erb"
 
 module GitHub
   module Markup
@@ -23,6 +24,16 @@ module GitHub
         impl.render(content)
       else
         content
+      end
+    end
+
+    def render_with_template(filename, template_name)
+      title = filename
+      body = render(filename)
+      if template_name
+        ERB.new(File.read(template_name)).result(binding)
+      else
+        body
       end
     end
 
